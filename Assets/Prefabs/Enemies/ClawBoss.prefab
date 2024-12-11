@@ -150,6 +150,8 @@ MonoBehaviour:
   hitPoint: 0
   scoreValue: 1000000
   isStartAction: 0
+  hpSlider: {fileID: 0}
+  visual: {fileID: 6642348317349391125}
 --- !u!114 &4926366461536061293
 MonoBehaviour:
   m_ObjectHideFlags: 0

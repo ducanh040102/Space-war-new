@@ -2,6 +2,7 @@ using DG.Tweening;
 using System;
 using System.Collections;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Enemy : MonoBehaviour
 {
@@ -17,6 +18,10 @@ public class Enemy : MonoBehaviour
     public float HitPoint { get => hitPoint; private set => hitPoint = value; }
     public float BaseHitPoint { get => baseHitPoint; private set => baseHitPoint = value; }
 
+    public Slider hpSlider;
+
+    public SpriteRenderer visual;
+
     private void Start()
     {
         InitialStats();
@@ -29,12 +34,22 @@ public class Enemy : MonoBehaviour
         Destroy();
     }
 
+    private IEnumerator DisableVisualHurtAfterDelay()
+    {
+        yield return new WaitForSeconds(0.1f);
+        visual.color = Color.white;
+    }
+
     protected virtual void InitialStats()
     {
         powerupSpawner = PowerupSpawner.sharedInstance;
         enemyBulletSpawner = gameObject.GetComponent<EnemyBulletSpawner>();
 
+        if (hpSlider != null)
+            hpSlider.value = 1;
+
         HitPoint = BaseHitPoint * (GameManager.instance.GetPlayerStage() + 1);
+        BaseHitPoint = HitPoint;
     }
 
     protected virtual void Fire()
@@ -47,6 +62,11 @@ public class Enemy : MonoBehaviour
         if (IsStartAction)
         {
             HitPoint -= damage;
+            if(hpSlider != null)
+                hpSlider.value = hitPoint / baseHitPoint;
+
+            visual.color = Color.red;
+            StartCoroutine(DisableVisualHurtAfterDelay());
         }
     }
 

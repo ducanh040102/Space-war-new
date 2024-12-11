@@ -10,6 +10,7 @@ public class DialogueManager : MonoBehaviour
     public TextMeshProUGUI dialogueText;
     public DialogueTrigger dialogueTrigger;
     public Animator animator;
+    public List<GameObject> scenes;
     private Queue<string> sentences;
 
     void Start()
@@ -38,6 +39,10 @@ public class DialogueManager : MonoBehaviour
         {
             EndDialogue();
             return;
+        }
+        for (int i = 0; i < scenes.Count - sentences.Count; i++)
+        {
+            scenes[i].SetActive(true);
         }
         string sentence = sentences.Dequeue();
         StopAllCoroutines();
